@@ -9,6 +9,10 @@ server.get("/", (req, res) => {
   res.json({ message: "Hello from the server." });
 });
 
+server.get("*", (req, res) => {
+  res.status(404).send("Path does not exist.");
+});
+
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
