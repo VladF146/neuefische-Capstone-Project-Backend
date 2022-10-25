@@ -10,9 +10,10 @@ server.get("/", (req, res) => {
 });
 
 server.get("*", (req, res) => {
-  res.status(404).send("Path does not exist.");
+  res.status(404);
+  res.json({ error: "This page doesn't exist." });
 });
 
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server listening on port ${port}.`);
 });
