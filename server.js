@@ -3,11 +3,6 @@ const express = require("express");
 
 const server = express();
 
-server.use((req, res, next) => {
-  console.log(req.method, req.path);
-  next();
-});
-
 server.get("/", (req, res) => {
   res.json({ message: "Hello from the server." });
 });
