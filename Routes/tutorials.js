@@ -16,6 +16,7 @@ router.get("/:id", getSingleTutorial);
 router.post("/", createSingleTutorial);
 
 router.patch("/:id", updateSingleTutorial);
+router.put("/:id", updateSingleTutorial);
 
 router.delete("/:id", deleteSingleTutorial);
 
