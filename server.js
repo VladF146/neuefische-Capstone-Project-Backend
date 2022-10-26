@@ -3,7 +3,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const tutorialsRoutes = require("./Routes/tutorials");
+const userRouter = require("./Router/users");
+const tutorialsRouter = require("./Router/tutorials");
 
 const server = express();
 
@@ -15,7 +16,8 @@ const mongodb_uri =
 server.use(express.json());
 server.use(cors());
 
-server.use("/api/tutorials", tutorialsRoutes);
+server.use("/api/users", userRouter);
+server.use("/api/tutorials", tutorialsRouter);
 
 server.get("/", (req, res) => {
   res.json({ message: "Hello from the server." });
