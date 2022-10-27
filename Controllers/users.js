@@ -1,7 +1,15 @@
 const bcrypt = require("bcryptjs");
 const { isEmail, isStrongPassword } = require("validator");
-
+const jwt = require("jsonwebtoken");
 const User = require("../Models/users");
+
+const generateJWT = (id) => {
+  const token = jwt.sign(
+    { id },
+    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO" //TODO: 
+  );
+  return token;
+};
 
 const signin = async (req, res) => {
   res.json({ message: "Signed in!" });
@@ -30,19 +38,15 @@ const signup = async (req, res) => {
 
     let user = await User.findOne({ email });
 
-    const passwordToHash = "someRandomPassword";
-    const salt = await bcrypt.genSalt(10);
-    console.log("salt: ", salt);
-    const hashedPassword = await bcrypt.hash(passwordToHash, salt);
-    console.log("hashed Password: ", hashedPassword);
-
     if (user) throw Error("Email address is already used!");
 
     const hash = await bcrypt.hash(password, 10);
 
     user = await User.create({ email, password: hash });
 
-    res.status(200).json(user);
+    const token = generateJWT(user._id);
+
+    res.status(200).json({ email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
