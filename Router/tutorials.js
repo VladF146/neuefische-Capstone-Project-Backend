@@ -1,4 +1,5 @@
 const express = require("express");
+const checkAuthStatus = require("../Middleware/checkAuthStatus");
 const {
   getAllTutorials,
   getSingleTutorial,
@@ -8,6 +9,8 @@ const {
 } = require("../Controllers/tutorials");
 
 const router = express.Router();
+
+router.use(checkAuthStatus);
 
 router.get("/", getAllTutorials);
 
