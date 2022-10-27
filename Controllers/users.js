@@ -15,9 +15,26 @@ const signup = async (req, res) => {
     if (!isEmail(email)) throw new Error("Email is not valid.");
 
     if (!password) throw Error("Password is required!");
-    if (!isStrongPassword(password)) throw new Error("Password is not strong.");
+    if (
+      !isStrongPassword(password, {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+    )
+      throw new Error(
+        "Password should be at least 8 characters long and contain at least one of each: Lower case letter, upper case letter, symbol."
+      );
 
     let user = await User.findOne({ email });
+
+    const passwordToHash = "someRandomPassword";
+    const salt = await bcrypt.genSalt(10);
+    console.log("salt: ", salt);
+    const hashedPassword = await bcrypt.hash(passwordToHash, salt);
+    console.log("hashed Password: ", hashedPassword);
 
     if (user) throw Error("Email address is already used!");
 
