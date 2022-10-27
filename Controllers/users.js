@@ -6,7 +6,8 @@ const User = require("../Models/users");
 const generateJWT = (id) => {
   const token = jwt.sign(
     { id },
-    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO" //TODO: use process.env.MY_SECRET in production
+    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO", //TODO: use process.env.MY_SECRET in production
+    { expiresIn: "6 hours" }
   );
   return token;
 };
