@@ -1,12 +1,15 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import dotenv from 'dotenv'
 
-const userRouter = require("./Router/users");
-const tutorialsRouter = require("./Router/tutorials");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+
+import userRouter from "./Router/users.js";
+import tutorialsRouter from "./Router/tutorials.js";
 
 const server = express();
+
+dotenv.config()
 
 const port = process.env.PORT || 5000;
 const mongodb_uri =

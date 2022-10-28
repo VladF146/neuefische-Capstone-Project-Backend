@@ -1,4 +1,4 @@
-const Tutorial = require("../Models/tutorials");
+import Tutorial from "../Models/tutorials.js";
 
 const getAllTutorials = async (req, res) => {
   const userId = req.userId;
@@ -63,7 +63,7 @@ const deleteSingleTutorial = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getAllTutorials,
   getSingleTutorial,
   createSingleTutorial,

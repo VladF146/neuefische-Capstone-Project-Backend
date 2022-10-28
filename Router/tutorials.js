@@ -1,12 +1,12 @@
-const express = require("express");
-const checkAuthStatus = require("../Middleware/checkAuthStatus");
-const {
+import express from "express";
+import checkAuthStatus from "../Middleware/checkAuthStatus.js";
+import {
   getAllTutorials,
   getSingleTutorial,
   createSingleTutorial,
   updateSingleTutorial,
   deleteSingleTutorial,
-} = require("../Controllers/tutorials");
+} from "../Controllers/tutorials.js";
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router.put("/:id", updateSingleTutorial);
 
 router.delete("/:id", deleteSingleTutorial);
 
-module.exports = router;
+export default router;

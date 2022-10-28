@@ -1,7 +1,7 @@
-const bcrypt = require("bcryptjs");
-const { isEmail, isStrongPassword } = require("validator");
-const jwt = require("jsonwebtoken");
-const User = require("../Models/users");
+import bcrypt from"bcryptjs";
+import validator from "validator";
+import jwt from "jsonwebtoken";
+import User from "../Models/users.js";
 
 const generateJWT = (id) => {
   const token = jwt.sign(
@@ -40,11 +40,11 @@ const signup = async (req, res) => {
 
   try {
     if (!email) throw Error("Email is required!");
-    if (!isEmail(email)) throw new Error("Email is not valid.");
+    if (!validator.isEmail(email)) throw new Error("Email is not valid.");
 
     if (!password) throw Error("Password is required!");
     if (
-      !isStrongPassword(password, {
+      !validator.isStrongPassword(password, {
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
@@ -72,4 +72,4 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signin, signup };
+export { signin, signup };
