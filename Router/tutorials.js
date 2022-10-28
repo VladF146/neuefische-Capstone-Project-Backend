@@ -1,26 +1,26 @@
-import express from "express";
-import checkAuthStatus from "../Middleware/checkAuthStatus.js";
+import express from 'express';
+import checkAuthStatus from '../Middleware/checkAuthStatus.js';
 import {
   getAllTutorials,
   getSingleTutorial,
   createSingleTutorial,
   updateSingleTutorial,
   deleteSingleTutorial,
-} from "../Controllers/tutorials.js";
+} from '../Controllers/tutorials.js';
 
 const router = express.Router();
 
 router.use(checkAuthStatus);
 
-router.get("/", getAllTutorials);
+router.get('/', getAllTutorials);
 
-router.get("/:id", getSingleTutorial);
+router.get('/:id', getSingleTutorial);
 
-router.post("/", createSingleTutorial);
+router.post('/', createSingleTutorial);
 
-router.patch("/:id", updateSingleTutorial);
-router.put("/:id", updateSingleTutorial);
+router.patch('/:id', updateSingleTutorial);
+router.put('/:id', updateSingleTutorial);
 
-router.delete("/:id", deleteSingleTutorial);
+router.delete('/:id', deleteSingleTutorial);
 
 export default router;

@@ -1,7 +1,7 @@
-import Tutorial from "../Models/tutorials.js";
+import Tutorial from '../Models/tutorials.js';
 
 const getAllTutorials = async (req, res) => {
-  const userId = req.userId;
+  const { userId } = req;
   try {
     const allTutorials = await Tutorial.find({ _id: userId });
     res.status(200).json(allTutorials);
@@ -24,7 +24,7 @@ const getSingleTutorial = async (req, res) => {
 
 const createSingleTutorial = async (req, res) => {
   const { title, content } = req.body;
-  const userId = req.userId;
+  const { userId } = req;
 
   try {
     const singleTutorial = await Tutorial.create({
@@ -44,7 +44,7 @@ const updateSingleTutorial = async (req, res) => {
   try {
     const singleTutorial = await Tutorial.findOneAndUpdate(
       { _id: id },
-      { ...req.body }
+      { ...req.body },
     );
     res.status(200).json(singleTutorial);
   } catch (error) {
