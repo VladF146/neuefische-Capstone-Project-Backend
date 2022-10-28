@@ -6,13 +6,33 @@ const User = require("../Models/users");
 const generateJWT = (id) => {
   const token = jwt.sign(
     { id },
-    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO" //TODO: 
+    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO", //TODO: use process.env.MY_SECRET in production
+    { expiresIn: "6 hours" }
   );
   return token;
 };
 
 const signin = async (req, res) => {
-  res.json({ message: "Signed in!" });
+  const { email, password } = req.body;
+
+  try {
+    if (!email) throw Error("Email is required!");
+    if (!password) throw Error("Password is required!");
+
+    const user = await User.findOne({ email });
+
+    if (!user) throw Error("No user with such an email exists!");
+
+    const isCorrectPassword = await bcrypt.compare(password, user.password);
+
+    if (!isCorrectPassword) throw Error("Password is wrong!");
+
+    const token = generateJWT(user._id);
+
+    res.status(200).json({ email, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const signup = async (req, res) => {
