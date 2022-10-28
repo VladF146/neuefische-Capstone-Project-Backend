@@ -1,8 +1,9 @@
 const Tutorial = require("../Models/tutorials");
 
 const getAllTutorials = async (req, res) => {
+  const userId = req.userId;
   try {
-    const allTutorials = await Tutorial.find({});
+    const allTutorials = await Tutorial.find({ _id: userId });
     res.status(200).json(allTutorials);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -23,9 +24,14 @@ const getSingleTutorial = async (req, res) => {
 
 const createSingleTutorial = async (req, res) => {
   const { title, content } = req.body;
+  const userId = req.userId;
 
   try {
-    const singleTutorial = await Tutorial.create({ title, content });
+    const singleTutorial = await Tutorial.create({
+      title,
+      content,
+      userId,
+    });
     res.status(200).json(singleTutorial);
   } catch (error) {
     res.status(400).json({ error: error.message });
