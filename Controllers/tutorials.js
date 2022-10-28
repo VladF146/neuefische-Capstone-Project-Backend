@@ -1,9 +1,9 @@
-import Tutorial from '../Models/tutorials.js';
+import Tutorial from "../Models/tutorials.js";
 
 const getAllTutorials = async (req, res) => {
   const { userId } = req;
   try {
-    const allTutorials = await Tutorial.find({ _id: userId });
+    const allTutorials = await Tutorial.find({ userId });
     res.status(200).json(allTutorials);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -12,9 +12,10 @@ const getAllTutorials = async (req, res) => {
 
 const getSingleTutorial = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req;
 
   try {
-    const singleTutorial = await Tutorial.findById(id);
+    const singleTutorial = await Tutorial.find({ id, userId });
 
     res.status(200).json(singleTutorial);
   } catch (error) {
@@ -40,12 +41,17 @@ const createSingleTutorial = async (req, res) => {
 
 const updateSingleTutorial = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req;
 
   try {
     const singleTutorial = await Tutorial.findOneAndUpdate(
-      { _id: id },
-      { ...req.body },
+      { _id: id, userId },
+      { ...req.body }
     );
+
+    if (!singleTutorial)
+      return res.status(404).json({ error: "No tutorial found." });
+
     res.status(200).json(singleTutorial);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -54,9 +60,12 @@ const updateSingleTutorial = async (req, res) => {
 
 const deleteSingleTutorial = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req;
 
   try {
-    const singleTutorial = await Tutorial.findOneAndDelete({ _id: id });
+    const singleTutorial = await Tutorial.findOneAndDelete({ _id: id, userId });
+    if (!singleTutorial)
+      return res.status(404).json({ error: "No tutorial found." });
     res.status(200).json(singleTutorial);
   } catch (error) {
     res.status(400).json({ error: error.message });
