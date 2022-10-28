@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const tutorialSchema = new mongoose.Schema({
   title: {
@@ -9,6 +9,10 @@ const tutorialSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
 });
 
-export default mongoose.model('Tutorial', tutorialSchema);
+export default mongoose.model("Tutorial", tutorialSchema);
