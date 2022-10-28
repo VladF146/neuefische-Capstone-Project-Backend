@@ -1,23 +1,26 @@
-const express = require("express");
-const {
+import express from 'express';
+import checkAuthStatus from '../Middleware/checkAuthStatus.js';
+import {
   getAllTutorials,
   getSingleTutorial,
   createSingleTutorial,
   updateSingleTutorial,
   deleteSingleTutorial,
-} = require("../Controllers/tutorials");
+} from '../Controllers/tutorials.js';
 
 const router = express.Router();
 
-router.get("/", getAllTutorials);
+router.use(checkAuthStatus);
 
-router.get("/:id", getSingleTutorial);
+router.get('/', getAllTutorials);
 
-router.post("/", createSingleTutorial);
+router.get('/:id', getSingleTutorial);
 
-router.patch("/:id", updateSingleTutorial);
-router.put("/:id", updateSingleTutorial);
+router.post('/', createSingleTutorial);
 
-router.delete("/:id", deleteSingleTutorial);
+router.patch('/:id', updateSingleTutorial);
+router.put('/:id', updateSingleTutorial);
 
-module.exports = router;
+router.delete('/:id', deleteSingleTutorial);
+
+export default router;
