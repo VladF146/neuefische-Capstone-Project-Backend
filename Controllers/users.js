@@ -1,12 +1,16 @@
+import dotenv from 'dotenv';
+
 import bcrypt from 'bcryptjs';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import User from '../Models/users.js';
 
+dotenv.config();
+
 const generateJWT = (id) => {
   const token = jwt.sign(
     { id },
-    'S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO', // TODO: use process.env.MY_SECRET in production
+    process.env.MY_JWT_SECRET || 'S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO',
     { expiresIn: '6 hours' },
   );
   return token;

@@ -1,5 +1,9 @@
+import dotenv from 'dotenv';
+
 import jwt from 'jsonwebtoken';
 import User from '../Models/users.js';
+
+dotenv.config();
 
 const checkAuthStatus = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
@@ -13,7 +17,8 @@ const checkAuthStatus = async (req, res, next) => {
   try {
     const { id } = jwt.verify(
       token,
-      'S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO', // TODO: use process.env.MY_SECRET in production
+      process.env.MY_JWT_SECRET
+        || 'S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO',
     );
 
     const user = await User.findOne({ _id: id });

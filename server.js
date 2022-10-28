@@ -12,7 +12,7 @@ const server = express();
 dotenv.config();
 
 const port = process.env.PORT || 5000;
-const mongodb_uri = process.env.MONGODB_URI
+const mongoDbUri = process.env.MONGODB_URI
   || 'mongodb+srv://VladF146:jU7%259CEZ%24iFn3YSs9e2z@courseapp.9lwqmqm.mongodb.net/?retryWrites=true&w=majority';
 
 server.use(express.json());
@@ -31,7 +31,7 @@ server.get('*', (req, res) => {
 });
 
 mongoose
-  .connect(mongodb_uri)
+  .connect(mongoDbUri)
   .then(() => {
     server.listen(port, () => {
       console.log(`Server listening on port ${port}.`); // eslint-disable-line no-console
