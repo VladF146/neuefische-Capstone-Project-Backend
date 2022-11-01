@@ -1,30 +1,56 @@
-const bcrypt = require("bcryptjs");
-const { isEmail, isStrongPassword } = require("validator");
-const jwt = require("jsonwebtoken");
-const User = require("../Models/users");
+import dotenv from "dotenv";
+
+import bcrypt from "bcryptjs";
+import validator from "validator";
+import jwt from "jsonwebtoken";
+import User from "../Models/users.js";
+
+dotenv.config();
 
 const generateJWT = (id) => {
   const token = jwt.sign(
     { id },
-    "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO" //TODO: 
+    process.env.MY_JWT_SECRET || "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO",
+    { expiresIn: "6 hours" }
   );
   return token;
 };
 
 const signin = async (req, res) => {
-  res.json({ message: "Signed in!" });
+  const { email, password } = req.body;
+
+  try {
+    if (!email) throw Error("Email is required!");
+    if (!password) throw Error("Password is required!");
+
+    const user = await User.findOne({ email });
+
+    if (!user) throw Error("No user with such an email exists!");
+
+    const isCorrectPassword = await bcrypt.compare(password, user.password);
+
+    if (!isCorrectPassword) throw Error("Password is wrong!");
+
+    const token = generateJWT(user._id);
+
+    res.status(200).json({ email, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 const signup = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!email) throw Error("Email is required!");
-    if (!isEmail(email)) throw new Error("Email is not valid.");
+    if (!email) return res.status(400).json({ error: "Email is required!" });
+    if (!validator.isEmail(email))
+      return res.status(400).json({ error: "Email is not valid." });
 
-    if (!password) throw Error("Password is required!");
+    if (!password)
+      return res.status(400).json({ error: "Password is required!" });
     if (
-      !isStrongPassword(password, {
+      !validator.isStrongPassword(password, {
         minLength: 8,
         minLowercase: 1,
         minUppercase: 1,
@@ -32,13 +58,15 @@ const signup = async (req, res) => {
         minSymbols: 1,
       })
     )
-      throw new Error(
-        "Password should be at least 8 characters long and contain at least one of each: Lower case letter, upper case letter, symbol."
-      );
+      return res.status(400).json({
+        error:
+          "Password should be at least 8 characters long and contain at least one of each: Lower case letter, upper case letter, symbol.",
+      });
 
     let user = await User.findOne({ email });
 
-    if (user) throw Error("Email address is already used!");
+    if (user)
+      return res.status(400).json({ error: "Email address is already used!" });
 
     const hash = await bcrypt.hash(password, 10);
 
@@ -52,4 +80,4 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { signin, signup };
+export { signin, signup };
