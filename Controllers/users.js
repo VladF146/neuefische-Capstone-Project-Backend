@@ -66,7 +66,7 @@ const signup = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user)
-      return res.status(400).json({ error: "Email address is already used!" });
+      return res.status(409).json({ error: "Email address is already used!" });
 
     const hash = await bcrypt.hash(password, 10);
 
