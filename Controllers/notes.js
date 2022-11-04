@@ -15,7 +15,7 @@ const getSingleNote = async (req, res) => {
   const { userId } = req;
 
   try {
-    const singleNote = await Note.find({ id, userId });
+    const singleNote = await Note.findOne({ _id: id, userId });
 
     res.status(200).json(singleNote);
   } catch (error) {
@@ -49,8 +49,7 @@ const updateSingleNote = async (req, res) => {
       { ...req.body }
     );
 
-    if (!singleNote)
-      return res.status(404).json({ error: "No note found." });
+    if (!singleNote) return res.status(404).json({ error: "No note found." });
 
     res.status(200).json(singleNote);
   } catch (error) {
@@ -64,8 +63,7 @@ const deleteSingleNote = async (req, res) => {
 
   try {
     const singleNote = await Note.findOneAndDelete({ _id: id, userId });
-    if (!singleNote)
-      return res.status(404).json({ error: "No note found." });
+    if (!singleNote) return res.status(404).json({ error: "No note found." });
     res.status(200).json(singleNote);
   } catch (error) {
     res.status(400).json({ error: error.message });
