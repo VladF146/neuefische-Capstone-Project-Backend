@@ -6,7 +6,7 @@ import {
   createSingleNote,
   updateSingleNote,
   deleteSingleNote,
-} from '../Controllers/note.js';
+} from '../Controllers/notes.js';
 
 const router = express.Router();
 
