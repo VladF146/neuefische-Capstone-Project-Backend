@@ -16,7 +16,7 @@ const mongoDbUri =
   process.env.MONGODB_URI ||
   "mongodb+srv://VladF146:jU7%259CEZ%24iFn3YSs9e2z@courseapp.9lwqmqm.mongodb.net/?retryWrites=true&w=majority";
 
-app.use(express.json({ limit: "10mb", extended: true }));
+app.use(express.json());
 server.use(cors());
 
 server.use("/api/users", userRouter);
