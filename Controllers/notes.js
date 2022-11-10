@@ -25,6 +25,18 @@ const getSingleNote = async (req, res) => {
 
 const createSingleNote = async (req, res) => {
   const { title, content } = req.body;
+  if (title.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Title can't be empty or contain only spaces!" });
+  }
+
+  if (content.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Content can't be empty or contain only spaces!" });
+  }
+
   const { userId } = req;
 
   try {
@@ -42,11 +54,23 @@ const createSingleNote = async (req, res) => {
 const updateSingleNote = async (req, res) => {
   const { id } = req.params;
   const { userId } = req;
+  const { title, content } = req.body;
+  if (title.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Title can't be empty or contain only spaces!" });
+  }
+
+  if (content.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Content can't be empty or contain only spaces!" });
+  }
 
   try {
     const singleNote = await Note.findOneAndUpdate(
       { _id: id, userId },
-      { ...req.body }
+      { title, content }
     );
 
     if (!singleNote) return res.status(404).json({ error: "No note found." });
