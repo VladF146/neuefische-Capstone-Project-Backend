@@ -20,16 +20,21 @@ const signin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    if (!email) throw Error("Email is required!");
-    if (!password) throw Error("Password is required!");
+    if (!email) return res.status(400).json({ error: "Email is required!" });
+    if (!password)
+      return res.status(400).json({ error: "Password is required!" });
 
     const user = await User.findOne({ email });
 
-    if (!user) throw Error("No user with such an email exists!");
+    if (!user)
+      return res
+        .status(400)
+        .json({ error: "No user with such an email exists!" });
 
     const isCorrectPassword = await bcrypt.compare(password, user.password);
 
-    if (!isCorrectPassword) throw Error("Password is wrong!");
+    if (!isCorrectPassword)
+      return res.status(400).json({ error: "Password is wrong!" });
 
     const token = generateJWT(user._id);
 
