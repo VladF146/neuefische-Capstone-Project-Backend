@@ -11,7 +11,7 @@ const generateJWT = (id) => {
   const token = jwt.sign(
     { id },
     process.env.MY_JWT_SECRET || "S2T7iqfnSIL1RWP9N8BCCs5jEgDwYRJ0ZbzNA6XF43dO",
-    { expiresIn: "6 hours" }
+    { expiresIn: "24h" }
   );
   return token;
 };
