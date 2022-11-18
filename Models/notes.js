@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema({
   title: {
@@ -13,6 +13,6 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-});
+}, { timestamps: true });
 
-export default mongoose.model("Note", noteSchema);
+export default mongoose.model('Note', noteSchema);
