@@ -1,9 +1,9 @@
-import Note from "../Models/notes.js";
+import Note from '../Models/notes.js';
 
 const getAllNotes = async (req, res) => {
   const { userId } = req;
   try {
-    const allNotes = await Note.find({ userId });
+    const allNotes = await Note.find({ userId }).sort({ createdAt: -1 });
     res.status(200).json(allNotes);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -70,10 +70,10 @@ const updateSingleNote = async (req, res) => {
   try {
     const singleNote = await Note.findOneAndUpdate(
       { _id: id, userId },
-      { title, content }
+      { title, content },
     );
 
-    if (!singleNote) return res.status(404).json({ error: "No note found." });
+    if (!singleNote) return res.status(404).json({ error: 'No note found.' });
 
     res.status(200).json(singleNote);
   } catch (error) {
@@ -87,7 +87,7 @@ const deleteSingleNote = async (req, res) => {
 
   try {
     const singleNote = await Note.findOneAndDelete({ _id: id, userId });
-    if (!singleNote) return res.status(404).json({ error: "No note found." });
+    if (!singleNote) return res.status(404).json({ error: 'No note found.' });
     res.status(200).json(singleNote);
   } catch (error) {
     res.status(400).json({ error: error.message });
